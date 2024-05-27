@@ -41,7 +41,7 @@ public class WithdrawalTest {
                 "5 - $200",
                 "6 - Cancel transaction",
         };
-        // PU08 Verifica que se mostró el menú de retiro
+        // PU09 Verifica que se mostró el menú de retiro
         for (String option : menuOptions) {
             verify(screen).displayMessageLine(option);
         }
@@ -53,7 +53,7 @@ public class WithdrawalTest {
         // intenta retirar mas de lo que tiene 60, y luego se sale
         when(keypad.getInput()).thenReturn(3).thenReturn(6);
         withdrawal.execute();
-        // PU09
+        // PU10
         verify(screen)
                 .displayMessageLine("\nInsufficient funds in your account." + "\n\nPlease choose a smaller amount.");
     }
@@ -65,7 +65,7 @@ public class WithdrawalTest {
         when(cashDispenser.isSufficientCashAvailable(20)).thenReturn(true);
         when(keypad.getInput()).thenReturn(1).thenReturn(6);
         withdrawal.execute();
-        // PU10
+        // PU11
         verify(screen)
                 .displayMessageLine("\nYour cash has been dispensed. Please take your cash now.");
     }
@@ -79,7 +79,8 @@ public class WithdrawalTest {
         when(keypad.getInput()).thenReturn(1).thenReturn(6);
         withdrawal.execute();
 
-        // verifica que se mostró el mensaje de que no hay suficiente dinero en el ATM
+        // PU12 verifica que se mostró el mensaje de que no hay suficiente dinero en el
+        // ATM
         verify(screen)
                 .displayMessageLine(
                         "\nInsufficient cash available in the ATM." + "\n\nPlease choose a smaller amount.");
@@ -88,7 +89,7 @@ public class WithdrawalTest {
         when(cashDispenser.isSufficientCashAvailable(20)).thenReturn(true);
         when(keypad.getInput()).thenReturn(1).thenReturn(6);
         withdrawal.execute();
-        // verifica que se mostró el mensaje de que se retiró el dinero
+        // PU13 verifica que se mostró el mensaje de que se retiró el dinero
         verify(screen)
                 .displayMessageLine("\nYour cash has been dispensed. Please take your cash now.");
     }
@@ -100,7 +101,7 @@ public class WithdrawalTest {
         // simulo retiro de $20
         when(keypad.getInput()).thenReturn(1).thenReturn(6);
         withdrawal.execute();
-        // PU13 Verifica que se llamó la a function debit en bankDatabase con los
+        // PU14 Verifica que se llamó la a function debit en bankDatabase con los
         // argumentos
         // correctos
         verify(bankDatabase).debit(12345, 20);
@@ -111,7 +112,7 @@ public class WithdrawalTest {
         // Se cancela la transacción con la op 6
         when(keypad.getInput()).thenReturn(6);
         withdrawal.execute();
-        // Verifico mensaje de cancelado
+        // PU15 Verifico mensaje de cancelado
         verify(screen)
                 .displayMessageLine("\nCanceling transaction...");
     }
