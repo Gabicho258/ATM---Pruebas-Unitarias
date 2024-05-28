@@ -79,9 +79,18 @@ public class DepositTest {
 
         // Simulamos la inactividad esperando un tiempo mayor a los 2 minutos
         scheduler.awaitTermination(2, TimeUnit.MINUTES);
-
+        // Verifica que se muestre el mensaje de cancelación por tiempo inactivo
         verify(screen).displayMessage("\nPlease enter a deposit amount in CENTS (or 0 to cancel): ");
         verify(screen).displayMessageLine("\nYou did not insert an envelope, so the ATM has canceled your transaction.");
 
+    }
+    @Test
+    public void testBalanceUpdate() {
+        when(keypad.getInput()).thenReturn(1000); // Simulando un depósito de $10.00
+        when(depositSlot.isEnvelopeReceived()).thenReturn(true); // Simula la recepción del sobre
+
+        deposit.execute();
+        // Verifica que se ejecute la actualización de saldo
+        verify(bankDatabase).credit(123456, 10.00);
     }
 }
