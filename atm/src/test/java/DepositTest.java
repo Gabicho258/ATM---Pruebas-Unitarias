@@ -1,9 +1,6 @@
 import com.example.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -19,6 +16,7 @@ public class DepositTest {
     private Keypad keypad;
     private Deposit deposit;
     private ScheduledExecutorService scheduler;
+
     @Before
     public void setUp() {
 
@@ -45,7 +43,8 @@ public class DepositTest {
 
     @Test
     public void testEnterDeposit() {
-        // Simulamos el ingreso de un número sin punto decimal y que luego se muestre en $
+        // Simulamos el ingreso de un número sin punto decimal y que luego se muestre en
+        // $
 
         when(keypad.getInput()).thenReturn(1000); // Simulando un depósito de $10.00
 
@@ -55,8 +54,8 @@ public class DepositTest {
         // Verificar que si se muestre en dolares
         verify(screen).dispalyDollarAmount(10.00);
 
-
     }
+
     @Test
     public void testCancelDeposit() {
         // Simulamos el comportamiento de la función
@@ -69,8 +68,8 @@ public class DepositTest {
         // Verificar que si muestra el mensaje de cancelación
         verify(screen).displayMessageLine("\nCanceling transaction...");
 
-
     }
+
     @Test
     public void testCancelDueToInactivity() throws InterruptedException {
         when(keypad.getInput()).thenReturn(1000); // Simulando un depósito de $10.00
@@ -81,9 +80,11 @@ public class DepositTest {
         scheduler.awaitTermination(2, TimeUnit.MINUTES);
         // Verifica que se muestre el mensaje de cancelación por tiempo inactivo
         verify(screen).displayMessage("\nPlease enter a deposit amount in CENTS (or 0 to cancel): ");
-        verify(screen).displayMessageLine("\nYou did not insert an envelope, so the ATM has canceled your transaction.");
+        verify(screen)
+                .displayMessageLine("\nYou did not insert an envelope, so the ATM has canceled your transaction.");
 
     }
+
     @Test
     public void testBalanceUpdate() {
         when(keypad.getInput()).thenReturn(1000); // Simulando un depósito de $10.00
